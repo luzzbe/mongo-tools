@@ -1,5 +1,8 @@
 # mongo-tools
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=luzzbe_mongo-tools&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=luzzbe_mongo-tools)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=luzzbe_mongo-tools&metric=coverage)](https://sonarcloud.io/summary/new_code?id=luzzbe_mongo-tools)
+
 ## Features
 
 - Compare indexes between two MongoDB databases and find redundant indexes.
