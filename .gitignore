@@ -2,5 +2,6 @@ node_modules
 dist
 reports
 coverage
+!coverage/lcov.info
 .stryker-tmp
 .idea
