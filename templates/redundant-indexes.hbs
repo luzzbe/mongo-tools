@@ -1,0 +1,35 @@
+<style>
+  * {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 5px;
+  }
+</style>
+
+<h1>Redundant indexes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Collection</th>
+      <th>Index</th>
+      <th>Keys</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each indexes}}
+      <tr>
+        <td>{{collection}}</td>
+        <td>{{names}}</td>
+        <td>{{json details.key}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
