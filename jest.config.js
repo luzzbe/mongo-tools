@@ -5,5 +5,6 @@ module.exports = {
     "^.+\\.js$": "ts-jest",
   },
   testMatch: ["**/*.spec.ts"],
+  collectCoverageFrom: ["src/**/*.ts"],
   coveragePathIgnorePatterns: ["node_modules"],
 }
