@@ -2,7 +2,7 @@ name: SonarCloud analysis
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -15,6 +15,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          args:
-            -Dsonar.projectKey=luzzbe_mongo-tools
+          args: -Dsonar.projectKey=luzzbe_mongo-tools
             -Dsonar.organization=luzzbe
+            -Dsonar.scm.provider=git
