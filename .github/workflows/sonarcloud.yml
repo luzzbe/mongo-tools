@@ -17,4 +17,4 @@ jobs:
         with:
           args: -Dsonar.projectKey=luzzbe_mongo-tools
             -Dsonar.organization=luzzbe
-            -Dsonar.scm.provider=git
+            -Dsonar.scm.disabled=True
