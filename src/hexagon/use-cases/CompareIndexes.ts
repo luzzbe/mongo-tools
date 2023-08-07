@@ -56,7 +56,7 @@ export class CompareIndexes {
   ) {
     const indexResult = indexesMap.get(this.getIndexKey(index))!
     if (indexResult) {
-      if (indexResult && indexResult.names[0] !== index.name) {
+      if (indexResult.names[0] !== index.name) {
         indexResult.names.push(index.name)
         indexResult.databases.push(databaseName)
         indexResult.status = "DIFFERENT"
