@@ -1,7 +1,7 @@
 node_modules
 dist
 reports
-coverage
+coverage/*
 !coverage/lcov.info
 .stryker-tmp
 .idea
