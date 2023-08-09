@@ -53,14 +53,4 @@ export class RedundantIndexes {
           otherIndex.details.key[otherIndexKeys[i]],
     )
   }
-
-  private getIndexesByCollection(indexes: MongoIndex[]) {
-    return indexes.reduce((acc: Record<string, MongoIndex[]>, val) => {
-      if (!acc[val.collection]) {
-        acc[val.collection] = []
-      }
-      acc[val.collection].push(val)
-      return acc
-    }, {})
-  }
 }
