@@ -38,9 +38,9 @@ describe("CompareIndexes", () => {
     expect(result).toEqual([])
   })
 
-  it("should return the index with MISSING if the index is present in the first database but not in the second", async () => {
+  it("should return the index with MISSING if the index is present only in one database", async () => {
     const indexes1: Array<MongoIndex> = [buildIndex({ field1: 1, field2: 1 })]
-    const indexes2: Array<MongoIndex> = []
+    const indexes2: Array<MongoIndex> = [buildIndex({ field2: 1 })]
     mongoDatabaseProvider1.indexes = { collection: indexes1 }
     mongoDatabaseProvider2.indexes = { collection: indexes2 }
     const compareIndexes = new CompareIndexes(
@@ -59,25 +59,11 @@ describe("CompareIndexes", () => {
         status: "MISSING",
         message: "Index is missing in database2",
       },
-    ])
-  })
-
-  it("should return the index with MISSING if the index is present in the second database but not in the first", async () => {
-    const indexes1: Array<MongoIndex> = []
-    const indexes2: Array<MongoIndex> = [buildIndex({ field1: 1, field2: 1 })]
-    mongoDatabaseProvider1.indexes = { collection: indexes1 }
-    mongoDatabaseProvider2.indexes = { collection: indexes2 }
-    const compareIndexes = new CompareIndexes(
-      mongoDatabaseProvider1,
-      mongoDatabaseProvider2,
-    )
-    const result = await compareIndexes.execute()
-    expect(result).toEqual([
       {
-        names: ["field1_1_field2_1"],
+        names: ["field2_1"],
         collection: "collection",
         details: {
-          key: { field1: 1, field2: 1 },
+          key: { field2: 1 },
         },
         databases: ["database2"],
         status: "MISSING",
