@@ -1,7 +1,7 @@
-import { HtmlFormatter } from "./HtmlFormatter"
+import { HtmlReporter } from "./HtmlReporter"
 import { MongoCompareIndexResult } from "../../../hexagon/models/MongoCompareIndexResult"
 
-describe("HtmlFormatter", () => {
+describe("HtmlReporter", () => {
   it("should return the indexes in html format", async () => {
     const indexes: MongoCompareIndexResult[] = [
       {
@@ -25,11 +25,8 @@ describe("HtmlFormatter", () => {
         message: "Index is missing in database2",
       },
     ]
-    const htmlFormatter = new HtmlFormatter()
-    const result = await htmlFormatter.format(
-      "templates/compare-indexes.hbs",
-      indexes,
-    )
+    const htmlFormatter = new HtmlReporter("templates/compare-indexes.hbs")
+    const result = await htmlFormatter.format({ indexes })
     expect(result).toContain("index_1,index_2")
     expect(result).toContain("collection1")
     expect(result).toContain("{&quot;field1&quot;:1,&quot;field2&quot;:1}")

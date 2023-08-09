@@ -48,8 +48,9 @@ export class RedundantIndexes {
     const otherIndexKeys = Object.keys(otherIndex.details.key)
     return indexKeys.every(
       (_, i) =>
-        otherIndex.details.key[otherIndexKeys[i]] ===
-        index.details.key[indexKeys[i]],
+        indexKeys[i] === otherIndexKeys[i] &&
+        index.details.key[indexKeys[i]] ===
+          otherIndex.details.key[otherIndexKeys[i]],
     )
   }
 

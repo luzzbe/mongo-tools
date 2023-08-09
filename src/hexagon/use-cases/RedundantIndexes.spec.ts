@@ -55,6 +55,7 @@ describe("RedundantIndexes", () => {
   it("should return the index as redundant if there are two indexes with the same details and one of them is a compound index", async () => {
     mongoDatabaseProvider.indexes = {
       collection: [
+        buildIndex({ _id: 1 }),
         buildIndex({ field1: 1, field2: 1 }),
         buildIndex({ field1: 1 }),
         buildIndex({ field1: 1, field2: 1, field: 1 }),

@@ -3,7 +3,7 @@ import path from "path"
 import fs from "fs"
 import { MongoDatabaseProvider } from "../../secondary/gateways/mongo-database/MongoDatabaseProvider"
 import { CompareIndexes } from "../../../hexagon/use-cases/CompareIndexes"
-import { HtmlFormatter } from "../formatters/HtmlFormatter"
+import { HtmlReporter } from "../reporters/HtmlReporter"
 import { RedundantIndexes } from "../../../hexagon/use-cases/RedundantIndexes"
 
 const compareIndexesHandler = async (
@@ -20,11 +20,8 @@ const compareIndexesHandler = async (
     mongoDatabaseProvider2,
   )
   const results = await compareIndexes.execute()
-  const htmlFormatter = new HtmlFormatter()
-  const html = await htmlFormatter.format(
-    "templates/compare-indexes.hbs",
-    results,
-  )
+  const htmlFormatter = new HtmlReporter("templates/compare-indexes.hbs")
+  const html = await htmlFormatter.format({ indexes: results })
   if (!fs.existsSync(path.dirname(argv.output))) {
     fs.mkdirSync(path.dirname(argv.output))
   }
@@ -40,11 +37,8 @@ const listRedundantIndexesHandler = async (
   const mongoDatabaseProvider = new MongoDatabaseProvider(argv.db)
   const redundantIndexes = new RedundantIndexes(mongoDatabaseProvider)
   const results = await redundantIndexes.execute()
-  const htmlFormatter = new HtmlFormatter()
-  const html = await htmlFormatter.format(
-    "templates/redundant-indexes.hbs",
-    results,
-  )
+  const htmlFormatter = new HtmlReporter("templates/redundant-indexes.hbs")
+  const html = await htmlFormatter.format({ indexes: results })
   if (!fs.existsSync(path.dirname(argv.output))) {
     fs.mkdirSync(path.dirname(argv.output))
   }
