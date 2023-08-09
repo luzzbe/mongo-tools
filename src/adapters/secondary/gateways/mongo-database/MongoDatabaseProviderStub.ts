@@ -5,13 +5,9 @@ export class MongoDatabaseProviderStub implements DatabaseProvider {
   private _databaseName: string | null = null
   private _indexes: MongoIndex[] | null = null
 
-  public async connect() {
-    return Promise.resolve()
-  }
+  public async connect() {}
 
-  public async close() {
-    return Promise.resolve()
-  }
+  public async close() {}
 
   public getDatabaseName() {
     return this._databaseName!
