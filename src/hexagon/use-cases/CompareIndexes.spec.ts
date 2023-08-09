@@ -15,8 +15,8 @@ describe("CompareIndexes", () => {
   })
 
   it("should return nothing if there is no index", async () => {
-    mongoDatabaseProvider1.indexes = []
-    mongoDatabaseProvider2.indexes = []
+    mongoDatabaseProvider1.indexes = {}
+    mongoDatabaseProvider2.indexes = {}
     const compareIndexes = new CompareIndexes(
       mongoDatabaseProvider1,
       mongoDatabaseProvider2,
@@ -28,8 +28,8 @@ describe("CompareIndexes", () => {
   it("should return nothing if the index is present in both databases", async () => {
     const indexes1 = [buildIndex({ field1: 1, field2: 1 })]
     const indexes2 = [buildIndex({ field1: 1, field2: 1 })]
-    mongoDatabaseProvider1.indexes = indexes1
-    mongoDatabaseProvider2.indexes = indexes2
+    mongoDatabaseProvider1.indexes = { collection: indexes1 }
+    mongoDatabaseProvider2.indexes = { collection: indexes2 }
     const compareIndexes = new CompareIndexes(
       mongoDatabaseProvider1,
       mongoDatabaseProvider2,
@@ -41,8 +41,8 @@ describe("CompareIndexes", () => {
   it("should return the index with MISSING if the index is present in the first database but not in the second", async () => {
     const indexes1: Array<MongoIndex> = [buildIndex({ field1: 1, field2: 1 })]
     const indexes2: Array<MongoIndex> = []
-    mongoDatabaseProvider1.indexes = indexes1
-    mongoDatabaseProvider2.indexes = indexes2
+    mongoDatabaseProvider1.indexes = { collection: indexes1 }
+    mongoDatabaseProvider2.indexes = { collection: indexes2 }
     const compareIndexes = new CompareIndexes(
       mongoDatabaseProvider1,
       mongoDatabaseProvider2,
@@ -65,8 +65,8 @@ describe("CompareIndexes", () => {
   it("should return the index with MISSING if the index is present in the second database but not in the first", async () => {
     const indexes1: Array<MongoIndex> = []
     const indexes2: Array<MongoIndex> = [buildIndex({ field1: 1, field2: 1 })]
-    mongoDatabaseProvider1.indexes = indexes1
-    mongoDatabaseProvider2.indexes = indexes2
+    mongoDatabaseProvider1.indexes = { collection: indexes1 }
+    mongoDatabaseProvider2.indexes = { collection: indexes2 }
     const compareIndexes = new CompareIndexes(
       mongoDatabaseProvider1,
       mongoDatabaseProvider2,
@@ -93,8 +93,8 @@ describe("CompareIndexes", () => {
     const indexes2: Array<MongoIndex> = [
       buildIndex({ field1: 1, field2: 1 }, "collection1", "wrong_name"),
     ]
-    mongoDatabaseProvider1.indexes = indexes1
-    mongoDatabaseProvider2.indexes = indexes2
+    mongoDatabaseProvider1.indexes = { collection1: indexes1 }
+    mongoDatabaseProvider2.indexes = { collection2: indexes2 }
     const compareIndexes = new CompareIndexes(
       mongoDatabaseProvider1,
       mongoDatabaseProvider2,
@@ -121,8 +121,8 @@ describe("CompareIndexes", () => {
     const indexes2: Array<MongoIndex> = [
       buildIndex({ field1: 1, field2: 1 }, "collection2"),
     ]
-    mongoDatabaseProvider1.indexes = indexes1
-    mongoDatabaseProvider2.indexes = indexes2
+    mongoDatabaseProvider1.indexes = { collection1: indexes1 }
+    mongoDatabaseProvider2.indexes = { collection2: indexes2 }
     const compareIndexes = new CompareIndexes(
       mongoDatabaseProvider1,
       mongoDatabaseProvider2,
@@ -153,8 +153,8 @@ describe("CompareIndexes", () => {
   })
 
   it("should connect and disconnect after run", async () => {
-    mongoDatabaseProvider1.indexes = []
-    mongoDatabaseProvider2.indexes = []
+    mongoDatabaseProvider1.indexes = {}
+    mongoDatabaseProvider2.indexes = {}
     const compareIndexes = new CompareIndexes(
       mongoDatabaseProvider1,
       mongoDatabaseProvider2,

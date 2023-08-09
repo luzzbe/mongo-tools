@@ -37,11 +37,15 @@ describe("MongoDatabaseProvider", () => {
       .createIndex({ field3: 1, field4: 1 }, { name: "field3_1_field4_1" })
 
     const indexes = await mongoDatabaseProvider.getIndexes()
-    expect(indexes).toEqual([
-      buildIndex({ _id: 1 }, "collection1", "_id_"),
-      buildIndex({ field1: 1, field2: 1 }, "collection1"),
-      buildIndex({ _id: 1 }, "collection2", "_id_"),
-      buildIndex({ field3: 1, field4: 1 }, "collection2"),
-    ])
+    expect(indexes).toEqual({
+      collection1: [
+        buildIndex({ _id: 1 }, "collection1", "_id_"),
+        buildIndex({ field1: 1, field2: 1 }, "collection1"),
+      ],
+      collection2: [
+        buildIndex({ _id: 1 }, "collection2", "_id_"),
+        buildIndex({ field3: 1, field4: 1 }, "collection2"),
+      ],
+    })
   })
 })

@@ -24,24 +24,18 @@ export class MongoDatabaseProvider implements DatabaseProvider {
   }
 
   public async getIndexes() {
+    const indexes: Record<string, MongoIndex[]> = {}
     const collections = await this.db.collections()
-    const indexes: Array<MongoIndex> = []
     for (const collection of collections) {
       const collectionIndexes = await collection.indexes()
-      collectionIndexes.forEach((i) =>
-        indexes.push({
-          name: i.name,
-          collection: collection.collectionName,
-          details: {
-            key: i.key,
-          },
-        }),
-      )
+      indexes[collection.collectionName] = collectionIndexes.map((i) => ({
+        name: i.name,
+        collection: collection.collectionName,
+        details: {
+          key: i.key,
+        },
+      }))
     }
-
-    return indexes.sort((a, b) => {
-      if (a.collection === b.collection) return a.name.localeCompare(b.name)
-      return a.collection.localeCompare(b.collection)
-    })
+    return indexes
   }
 }

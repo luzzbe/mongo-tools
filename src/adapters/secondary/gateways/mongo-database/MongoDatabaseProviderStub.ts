@@ -4,7 +4,7 @@ import { DatabaseProvider } from "../../../../hexagon/gateways/DatabaseProvider"
 export class MongoDatabaseProviderStub implements DatabaseProvider {
   private _calls: string[] = []
   private _databaseName: string | null = null
-  private _indexes: MongoIndex[] | null = null
+  private _indexes: Record<string, MongoIndex[]> | null = null
 
   public async connect() {
     this._calls.push("connect")
@@ -21,8 +21,8 @@ export class MongoDatabaseProviderStub implements DatabaseProvider {
     return this._indexes!
   }
 
-  set indexes(indexes: MongoIndex[]) {
-    this._indexes = indexes
+  set indexes(value: Record<string, MongoIndex[]>) {
+    this._indexes = value
   }
 
   set databaseName(databaseName: string) {

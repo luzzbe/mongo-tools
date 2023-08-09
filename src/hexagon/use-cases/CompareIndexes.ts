@@ -32,18 +32,23 @@ export class CompareIndexes {
 
   private getIndexesMap(
     databaseName1: string,
-    indexes1: MongoIndex[],
+    indexes1: Record<string, MongoIndex[]>,
     databaseName2: string,
-    indexes2: MongoIndex[],
+    indexes2: Record<string, MongoIndex[]>,
   ) {
     const indexesMap = new Map<string, MongoCompareIndexResult>()
 
-    indexes1.forEach((index1) =>
-      this.handleIndex(databaseName1, databaseName2, index1, indexesMap),
-    )
-    indexes2.forEach((index2) =>
-      this.handleIndex(databaseName2, databaseName1, index2, indexesMap),
-    )
+    Object.values(indexes1).forEach((indexes) => {
+      indexes.forEach((index1) =>
+        this.handleIndex(databaseName1, databaseName2, index1, indexesMap),
+      )
+    })
+
+    Object.values(indexes2).forEach((indexes) => {
+      indexes.forEach((index2) =>
+        this.handleIndex(databaseName2, databaseName1, index2, indexesMap),
+      )
+    })
 
     return indexesMap
   }

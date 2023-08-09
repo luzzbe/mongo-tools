@@ -10,24 +10,26 @@ describe("RedundantIndexes", () => {
   })
 
   it("should return nothing if there are no indexes", async () => {
-    mongoDatabaseProvider.indexes = []
+    mongoDatabaseProvider.indexes = {}
     const redundantIndexes = new RedundantIndexes(mongoDatabaseProvider)
     const result = await redundantIndexes.execute()
     expect(result).toEqual([])
   })
 
   it("should return nothing if there is only one index", async () => {
-    mongoDatabaseProvider.indexes = [buildIndex({ field1: 1 })]
+    mongoDatabaseProvider.indexes = { collection: [buildIndex({ field1: 1 })] }
     const redundantIndexes = new RedundantIndexes(mongoDatabaseProvider)
     const result = await redundantIndexes.execute()
     expect(result).toEqual([])
   })
 
   it("should return the index as redundant if there are two indexes with the same details", async () => {
-    mongoDatabaseProvider.indexes = [
-      buildIndex({ field1: 1 }, "collection", "field1_1"),
-      buildIndex({ field1: 1 }, "collection", "field1_-1"),
-    ]
+    mongoDatabaseProvider.indexes = {
+      collection: [
+        buildIndex({ field1: 1 }, "collection", "field1_1"),
+        buildIndex({ field1: 1 }, "collection", "field1_-1"),
+      ],
+    }
     const redundantIndexes = new RedundantIndexes(mongoDatabaseProvider)
     const result = await redundantIndexes.execute()
     expect(result).toEqual([
@@ -51,13 +53,15 @@ describe("RedundantIndexes", () => {
   })
 
   it("should return the index as redundant if there are two indexes with the same details and one of them is a compound index", async () => {
-    mongoDatabaseProvider.indexes = [
-      buildIndex({ field1: 1, field2: 1 }),
-      buildIndex({ field1: 1 }),
-      buildIndex({ field1: 1, field2: 1, field: 1 }),
-      buildIndex({ field1: 1, field2: -1 }),
-      buildIndex({ field1: -1 }),
-    ]
+    mongoDatabaseProvider.indexes = {
+      collection: [
+        buildIndex({ field1: 1, field2: 1 }),
+        buildIndex({ field1: 1 }),
+        buildIndex({ field1: 1, field2: 1, field: 1 }),
+        buildIndex({ field1: 1, field2: -1 }),
+        buildIndex({ field1: -1 }),
+      ],
+    }
     const redundantIndexes = new RedundantIndexes(mongoDatabaseProvider)
     const result = await redundantIndexes.execute()
     expect(result).toEqual([
@@ -85,7 +89,7 @@ describe("RedundantIndexes", () => {
   })
 
   it("should connect and disconnect after run", async () => {
-    mongoDatabaseProvider.indexes = []
+    mongoDatabaseProvider.indexes = {}
     const redundantIndexes = new RedundantIndexes(mongoDatabaseProvider)
     await redundantIndexes.execute()
     expect(mongoDatabaseProvider.calls).toEqual(["connect", "disconnect"])

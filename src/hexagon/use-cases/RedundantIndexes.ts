@@ -14,12 +14,10 @@ export class RedundantIndexes {
     return redundantIndexes
   }
 
-  private getRedundantIndexes(indexes: MongoIndex[]) {
-    const indexesByCollection = this.getIndexesByCollection(indexes)
-
+  private getRedundantIndexes(indexes: Record<string, MongoIndex[]>) {
     const redundantIndexes: MongoRedundantIndexResult[] = []
 
-    Object.values(indexesByCollection).forEach((indexes) => {
+    Object.values(indexes).forEach((indexes) => {
       indexes.forEach((index) => {
         indexes.forEach((otherIndex) => {
           if (index.name === otherIndex.name) return
