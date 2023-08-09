@@ -83,4 +83,11 @@ describe("RedundantIndexes", () => {
       },
     ])
   })
+
+  it("should connect and disconnect after run", async () => {
+    mongoDatabaseProvider.indexes = []
+    const redundantIndexes = new RedundantIndexes(mongoDatabaseProvider)
+    await redundantIndexes.execute()
+    expect(mongoDatabaseProvider.calls).toEqual(["connect", "disconnect"])
+  })
 })

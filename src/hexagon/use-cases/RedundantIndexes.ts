@@ -8,8 +8,13 @@ export class RedundantIndexes {
     await this.mongoDatabaseProvider.connect()
 
     const indexes = await this.mongoDatabaseProvider.getIndexes()
-    if (indexes.length <= 1) return []
+    const redundantIndexes = this.getRedundantIndexes(indexes)
 
+    await this.mongoDatabaseProvider.close()
+    return redundantIndexes
+  }
+
+  private getRedundantIndexes(indexes: MongoIndex[]) {
     const indexesByCollection = this.getIndexesByCollection(indexes)
 
     const redundantIndexes: MongoRedundantIndexResult[] = []
@@ -37,7 +42,6 @@ export class RedundantIndexes {
       })
     })
 
-    await this.mongoDatabaseProvider.close()
     return redundantIndexes
   }
 

@@ -151,4 +151,16 @@ describe("CompareIndexes", () => {
       },
     ])
   })
+
+  it("should connect and disconnect after run", async () => {
+    mongoDatabaseProvider1.indexes = []
+    mongoDatabaseProvider2.indexes = []
+    const compareIndexes = new CompareIndexes(
+      mongoDatabaseProvider1,
+      mongoDatabaseProvider2,
+    )
+    await compareIndexes.execute()
+    expect(mongoDatabaseProvider1.calls).toEqual(["connect", "disconnect"])
+    expect(mongoDatabaseProvider2.calls).toEqual(["connect", "disconnect"])
+  })
 })

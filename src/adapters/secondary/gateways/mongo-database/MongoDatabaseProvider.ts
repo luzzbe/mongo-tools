@@ -1,5 +1,6 @@
 import { DatabaseProvider } from "../../../../hexagon/gateways/DatabaseProvider"
 import { Db, MongoClient } from "mongodb"
+import { MongoIndex } from "../../../../hexagon/models/MongoIndex"
 
 export class MongoDatabaseProvider implements DatabaseProvider {
   private client: MongoClient
@@ -24,18 +25,23 @@ export class MongoDatabaseProvider implements DatabaseProvider {
 
   public async getIndexes() {
     const collections = await this.db.collections()
-    const indexes = await Promise.all(
-      collections.map(async (collection) => {
-        const indexes = await collection.indexes()
-        return indexes.map((index) => ({
-          name: index.name,
+    const indexes: Array<MongoIndex> = []
+    for (const collection of collections) {
+      const collectionIndexes = await collection.indexes()
+      collectionIndexes.forEach((i) =>
+        indexes.push({
+          name: i.name,
           collection: collection.collectionName,
           details: {
-            key: index.key,
+            key: i.key,
           },
-        }))
-      }),
-    )
-    return indexes.flat()
+        }),
+      )
+    }
+
+    return indexes.sort((a, b) => {
+      if (a.collection === b.collection) return a.name.localeCompare(b.name)
+      return a.collection.localeCompare(b.collection)
+    })
   }
 }

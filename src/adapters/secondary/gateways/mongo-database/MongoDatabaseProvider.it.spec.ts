@@ -1,3 +1,4 @@
+import { buildIndex } from "../../../../../test/helpers/buildIndex.test"
 import { MongoDatabaseProvider } from "./MongoDatabaseProvider"
 import { MongoClient } from "mongodb"
 
@@ -36,46 +37,11 @@ describe("MongoDatabaseProvider", () => {
       .createIndex({ field3: 1, field4: 1 }, { name: "field3_1_field4_1" })
 
     const indexes = await mongoDatabaseProvider.getIndexes()
-    expect(indexes).toContainEqual({
-      name: "_id_",
-      collection: "collection1",
-      details: {
-        key: {
-          _id: 1,
-        },
-      },
-    })
-
-    expect(indexes).toContainEqual({
-      name: "field1_1_field2_1",
-      collection: "collection1",
-      details: {
-        key: {
-          field1: 1,
-          field2: 1,
-        },
-      },
-    })
-
-    expect(indexes).toContainEqual({
-      name: "_id_",
-      collection: "collection2",
-      details: {
-        key: {
-          _id: 1,
-        },
-      },
-    })
-
-    expect(indexes).toContainEqual({
-      name: "field3_1_field4_1",
-      collection: "collection2",
-      details: {
-        key: {
-          field3: 1,
-          field4: 1,
-        },
-      },
-    })
+    expect(indexes).toEqual([
+      buildIndex({ _id: 1 }, "collection1", "_id_"),
+      buildIndex({ field1: 1, field2: 1 }, "collection1"),
+      buildIndex({ _id: 1 }, "collection2", "_id_"),
+      buildIndex({ field3: 1, field4: 1 }, "collection2"),
+    ])
   })
 })
